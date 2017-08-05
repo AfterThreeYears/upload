@@ -1,0 +1,9 @@
+.vscode
+.idea
+.DS_Store
+/node_modules/*
+/build/*
+/manifest/*
+.sass-cache
+build.zip
+npm-debug.log
