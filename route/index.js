@@ -43,7 +43,7 @@ router.get('/', (req, res) => {
   fs.readdir(publicPath, (err, files) => {
     if (err) res.json({ code: 0, data: err });
     const data = files.map((item) => {
-      return `./static/${item}`;
+      return `${item}`;
     });
     res.json({ code: 1, data });
   });

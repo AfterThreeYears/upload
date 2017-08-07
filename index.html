@@ -7,11 +7,56 @@
   <title>Document</title>
 </head>
 <body>
+  <input type="file" id="file" multiple/>
+  <ul id="result">
+
+  </ul>
   <script src="https://cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
   <script>
-    $.ajax({
-      url: 'localhost',
+    const url = '//118.193.167.237:5656';
+    const base = '//118.193.167.237:5656/static/';
+    const $result = $('#result');
+    const $file = $('#file');
+    const getList = () => {
+      $.ajax({
+        url: `${url}/upload`,
+      }).then((data) => {
+        $result.html(render(data.data).join(''));
+      }).fail((err) => {
+        alert(JSON.stringify(err));
+      });
+    };
+    const render = (data) => {
+      return data.map((item) => {
+        return `<li><a href="${base}${item}" download="${base}${item}">${item}</a></li>`;
+      });
+    };
+    const upload = (f) => {
+      $.ajax({
+        url: `${url}/upload`,
+        method: 'POST',
+        processData: false,
+        contentType: false,
+        data: f,
+      }).then((data) => {
+        location.reload();
+      }).fail((err) => {
+        alert(JSON.stringify(err));
+      });
+    };
+
+    $file.on('change', (event) => {
+      const f = new FormData();
+      console.log(event.target.files);
+      const files = event.target.files;
+      for(const key in files) {
+        f.append(key, files[key]);
+      }
+      upload(f);
     });
+
+    getList();
+
   </script>
 </body>
 </html>
